@@ -2,6 +2,8 @@
 
 This Python script pulls **Liverpool FC's** fixtures-results for the 24/25 season using the free [Football-Data.org](https://www.football-data.org/) API. It can be easily changed to display the fixtures and results of any team by changing the team ID. Added Google Calendar API to automatically add fixtures to your phones calendar.
 
+![Screenshot 2024-10-15 120849](https://github.com/user-attachments/assets/e8ff6838-88c9-4d4c-a60a-a33c6750ad61)
+
 ## ✨ Features
 
 - 🏆 **Pull Fixtures and Results**: Displays Liverpool's fixtures and results, with details about the competition, teams, scores, and the date/time in Sydney (Australia) timezone (can be changed based on location).
