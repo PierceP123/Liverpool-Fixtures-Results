@@ -28,11 +28,11 @@ This Python script pulls **Liverpool FC's** fixtures-results for the 24/25 seaso
 - Add your API key to the .env file:
 - bash
 - Copy code
-- API_KEY=your_api_key_here
+- API_KEY=api_key
 - **Run the script:**
 - bash
 - Copy code
-- python liverpool_fixtures.py
+- python fixtures-results.py
 - Change the team (Optional):
 - Replace LIVERPOOL_ID with the ID of the team you want to get fixtures-results for. You can find the team IDs in the API documentation.
 
