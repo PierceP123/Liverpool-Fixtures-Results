@@ -3,6 +3,7 @@ import json
 import pytz # Time Zone library
 from datetime import datetime
 from dotenv import load_dotenv
+from datetime import timedelta
 import os
 import google.auth
 from googleapiclient.discovery import build
@@ -77,15 +78,32 @@ def get_liverpool_fixtures():
                 print(f"Match: {home_team} {match_result['home']} - {match_result['away']} {away_team}")
                 print(f"Date (AUS / SYD): {match_date_aus.strftime('%Y-%m-%d %H:%M:%S')}")
                 print('Fixture Complete\n')
-            else:
-                summary = f"{home_team} vs {away_team}"
-                description = f"Competition: {comp_name}\nStatus: {status}"
-                print(f"Upcoming match: {summary} on {match_date_aus.strftime('%Y-%m-%d %H:%M:%S')}")
+
+                match_id = match['id']
+                detail_url = f"https://api.football-data.org/v4/matches/{match_id}"
+                detail_res = requests.get(detail_url, headers=headers)
+                scorers_text = "Scorers: N/A"
+
+                if detail_res.status_code == 200:
+                    detail_data = detail_res.json()
+                    goals = detail_data.get('goals', [])
+                    if goals:
+                        scorers = []
+                        for g in goals:
+                            minute = g.get('minute')
+                            scorer = g['scorer']['name']
+                            team = g['team']['name']
+                            scorers.append(f"{team}: {scorer} ({minute}')")
+                        scorers_text = "\n".join(scorers)
+
+            summary = f"{home_team} vs {away_team}"
+            description = f"Competition: {comp_name}\nStatus: {status}"
+            print(f"Upcoming match: {summary} on {match_date_aus.strftime('%Y-%m-%d %H:%M:%S')}")
                 
-                # Add event to Google Calendar
-                start_time = match_date_aus
-                end_time = match_date_aus.replace(hour=match_date_aus.hour + 2)
-                add_event_to_calendar(service, summary, description, start_time, end_time)
+            # Add event to Google Calendar
+            start_time = match_date_aus
+            end_time = match_date_aus + timedelta(hours=2)
+            add_event_to_calendar(service, summary, description, start_time, end_time)
     else:
         print(f"Error: {response.status_code}")
 
